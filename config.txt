@@ -1,0 +1,8 @@
+sourceOrg=CR1
+destinationOrg=PB1
+package.xmlLocationToDeploy=metadata\package.xml
+folderLocationForFetchedZip=metadata
+waitTimeInMinutes=10
+testLevel=RunSpecifiedTests
+runTests=TemperatureConverterTest,LeadProcessorTest
+folderLocationToUndeploy=metadata\destructive
