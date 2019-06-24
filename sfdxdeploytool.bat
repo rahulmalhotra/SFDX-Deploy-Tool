@@ -43,7 +43,7 @@ set /P orgUrl="Enter the instance/login url for your org:- "
 echo.
 echo Authorizing source org...
 echo sfdx force:auth:web:login --setalias %sourceOrgAlias% --instanceurl %orgUrl% --setdefaultusername
-sfdx force:auth:web:login --setalias %sourceOrgAlias% --instanceurl %orgUrl% --setdefaultusername
+call sfdx force:auth:web:login --setalias %sourceOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 if %errorlevel%==1 (
     echo.
     echo Unable to authorize source org. Please try again.
@@ -71,7 +71,7 @@ set /P orgUrl="Enter the instance/login url for your org:- "
 echo.
 echo Authorizing destination org...
 echo sfdx force:auth:web:login --setalias %destinationOrgAlias% --instanceurl %orgUrl% --setdefaultusername
-sfdx force:auth:web:login --setalias %destinationOrgAlias% --instanceurl %orgUrl% --setdefaultusername
+call sfdx force:auth:web:login --setalias %destinationOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 if %errorlevel%==1 (
     echo.
     echo Unable to authorize destination org. Please try again.
@@ -129,7 +129,7 @@ echo.
 echo Fetching the metadata from source org...
 echo.
 echo sfdx force:mdapi:retrieve -r "%zipFolderLocation%" -u %sourceOrgAlias% -k %packageXmlLocation%
-sfdx force:mdapi:retrieve -r "%zipFolderLocation%" -u %sourceOrgAlias% -k %packageXmlLocation%
+call sfdx force:mdapi:retrieve -r "%zipFolderLocation%" -u %sourceOrgAlias% -k %packageXmlLocation%
 if %errorlevel%==1 (
     echo Unable to fetch metadata
 )
@@ -143,10 +143,10 @@ echo Validating metadata in destination org...
 echo.
 if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
-    sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    call sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
 ) else (
     echo sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
-    sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    call sfdx force:mdapi:deploy -c -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
 )
 if %errorlevel%==1 (
     echo Unable to validate metadata
@@ -163,10 +163,10 @@ echo Deploying metadata in destination org...
 echo.
 if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
-    sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    call sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
 ) else (
     echo sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
-    sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    call sfdx force:mdapi:deploy -f %zipFolderLocation%/unpackaged.zip -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
 )
 if %errorlevel%==1 (
     echo Unable to deploy metadata
@@ -182,7 +182,7 @@ echo.
 echo Removing metadata from destination org...
 echo.
 echo sfdx force:mdapi:deploy -d %folderLocationToUndeploy% -u %destinationOrgAlias% -w %waitTime%
-sfdx force:mdapi:deploy -d %folderLocationToUndeploy% -u %destinationOrgAlias% -w %waitTime%
+call sfdx force:mdapi:deploy -d %folderLocationToUndeploy% -u %destinationOrgAlias% -w %waitTime%
 if %errorlevel%==1 (
     echo Unable to remove metadata
 ) else (
