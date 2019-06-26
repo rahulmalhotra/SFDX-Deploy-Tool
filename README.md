@@ -60,6 +60,7 @@ I have written a blog post for the same for the same that can be viewed [here](h
 ## Todo
 
 - [x] User should be able to fetch, validate, deploy and un-deploy metadata.
+- [ ] Support for mac.
 
 ## Contributing
 
