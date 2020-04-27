@@ -4,6 +4,7 @@
 @echo off
 echo.
 echo Welcome to SFDX Deployment Tool for Windows..!!
+
 :: Reading configuration
 for /f "tokens=1,2 delims==" %%a in (config.txt) do (
     if "%%a"=="sourceOrg" (
@@ -39,9 +40,25 @@ if "%sourceOrgAlias%"=="" (
 :updateSourceOrgAlias
 echo.
 set /P sourceOrgAlias="Enter alias for source org:- "
-set /P orgUrl="Enter the instance/login url for your org:- "
+echo.
+echo 1. Connect to Developer/Production
+echo.
+echo 2. Connect to Sandbox
+echo.
+set /P orgChoice="Enter your choice (1/2) or Press Enter to add a custom URL:- "
+if "%orgChoice%"=="1" (
+    set orgChoice=
+    set orgUrl="https://login.salesforce.com"
+) else if "%orgChoice%"=="2" (
+    set orgChoice=
+    set orgUrl="https://test.salesforce.com"
+) else (
+    echo.
+    set /P orgUrl="Enter the instance/login url for your org:- "
+)
 echo.
 echo Authorizing source org...
+echo.
 echo sfdx force:auth:web:login --setalias %sourceOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 call sfdx force:auth:web:login --setalias %sourceOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 if %errorlevel%==1 (
@@ -59,7 +76,7 @@ if %errorlevel%==1 (
     del config.txt
     ren result.txt config.txt
     echo.
-    echo Source org authorized successfuly. Config file updated.
+    echo Source org authorized successfully. Config file updated.
 )
 goto :checkOrgAlias
 
@@ -67,9 +84,25 @@ goto :checkOrgAlias
 :updateDestinationOrgAlias
 echo.
 set /P destinationOrgAlias="Enter alias for destination org:- "
-set /P orgUrl="Enter the instance/login url for your org:- "
+echo.
+echo 1. Connect to Developer/Production
+echo.
+echo 2. Connect to Sandbox
+echo.
+set /P orgChoice="Enter your choice (1/2) or Press Enter to add a custom URL:- "
+if "%orgChoice%"=="1" (
+    set orgChoice=
+    set orgUrl="https://login.salesforce.com"
+) else if "%orgChoice%"=="2" (
+    set orgChoice=
+    set orgUrl="https://test.salesforce.com"
+) else (
+    echo.
+    set /P orgUrl="Enter the instance/login url for your org:- "
+)
 echo.
 echo Authorizing destination org...
+echo.
 echo sfdx force:auth:web:login --setalias %destinationOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 call sfdx force:auth:web:login --setalias %destinationOrgAlias% --instanceurl %orgUrl% --setdefaultusername
 if %errorlevel%==1 (
@@ -87,7 +120,7 @@ if %errorlevel%==1 (
     del config.txt
     ren result.txt config.txt
     echo.
-    echo Destination org authorized successfuly. Config file updated.
+    echo Destination org authorized successfully. Config file updated.
 )
 goto :checkOrgAlias
 
@@ -99,11 +132,17 @@ echo Welcome to SFDX Deployment Tool for Windows..!!
 echo.
 echo 1. Fetch metadata from source org
 echo.
-echo 2. Validate metadata in destination org
+echo 2. Extract fetched metadata
 echo.
-echo 3. Deploy metadata in destination org
+echo 3. Validate metadata in destination org
 echo.
-echo 4. Un-Deploy metadata in destination org
+echo 4. Deploy metadata in destination org
+echo.
+echo 5. Validate extracted metadata in destination org
+echo.
+echo 6. Deploy extracted metadata in destination org
+echo.
+echo 7. Un-Deploy metadata in destination org
 echo.
 set /P choice="Enter your choice:- "
 if "%choice%"=="1" (
@@ -111,14 +150,24 @@ if "%choice%"=="1" (
     goto :fetchMetadata
 ) else if "%choice%"=="2" (
     set choice=
-    goto :validateMetadata
+    goto :extractFetchedMetadata
 ) else if "%choice%"=="3" (
     set choice=
-    goto :deployMetadata
+    goto :validateMetadata
 ) else if "%choice%"=="4" (
+    set choice=
+    goto :deployMetadata
+) else if "%choice%"=="5" (
+    set choice=
+    goto :validateExtractedMetadata
+) else if "%choice%"=="6" (
+    set choice=
+    goto :deployExtractedMetadata
+) else if "%choice%"=="7" (
     set choice=
     goto :unDeployMetadata
 )
+echo.
 pause
 exit
 
@@ -129,11 +178,31 @@ echo.
 echo Fetching the metadata from source org...
 echo.
 echo sfdx force:mdapi:retrieve -r "%zipFolderLocation%" -u %sourceOrgAlias% -k "%packageXmlLocation%"
+echo.
 call sfdx force:mdapi:retrieve -r "%zipFolderLocation%" -u %sourceOrgAlias% -k "%packageXmlLocation%"
 if %errorlevel%==1 (
     echo Unable to fetch metadata
 )
-goto checkContinue
+echo.
+pause
+goto startMenu
+
+:extractFetchedMetadata
+cls
+echo.
+echo Extracting the metadata previously fetched from source org...
+echo.
+echo powershell Expand-Archive %zipFolderLocation%/unpackaged.zip -DestinationPath %zipFolderLocation% -Force
+call powershell Expand-Archive %zipFolderLocation%/unpackaged.zip -DestinationPath %zipFolderLocation% -Force
+echo.
+if %errorlevel%==1 (
+    echo Unable to extract metadata
+) else (
+    echo Metadata extracted successfully and is available in folder "%zipFolderLocation%/unpackaged"
+)
+echo.
+pause
+goto startMenu
 
 :: Validating the metadata in destination org
 :validateMetadata
@@ -143,17 +212,24 @@ echo Validating metadata in destination org...
 echo.
 if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    echo.
     call sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
 ) else (
     echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    echo.
     call sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
 )
 if %errorlevel%==1 (
+    echo.
     echo Unable to validate metadata
 ) else (
-    echo Metadata validated successfuly in destination org
+    cls
+    echo.
+    echo Metadata validated successfully in destination org
 )
-goto checkContinue
+echo.
+pause
+goto startMenu
 
 :: Deploying the metadata in destination org
 :deployMetadata
@@ -163,17 +239,78 @@ echo Deploying metadata in destination org...
 echo.
 if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    echo.
     call sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
 ) else (
     echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    echo.
     call sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
 )
 if %errorlevel%==1 (
+    echo.
     echo Unable to deploy metadata
 ) else (
-    echo Metadata deployed successfuly in destination org
+    cls
+    echo.
+    echo Metadata deployed successfully in destination org
 )
-goto checkContinue
+echo.
+pause
+goto startMenu
+
+:: Validating the extracted metadata in destination org
+:validateExtractedMetadata
+cls
+echo.
+echo Validating extracted metadata in destination org...
+echo.
+if "%testLevel%"=="RunSpecifiedTests" (
+    echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    echo.
+    call sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else (
+    echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    echo.
+    call sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+)
+if %errorlevel%==1 (
+    echo.
+    echo Unable to validate metadata
+) else (
+    cls
+    echo.
+    echo Metadata validated successfully in destination org
+)
+echo.
+pause
+goto startMenu
+
+:: Deploying the extracted metadata in destination org
+:deployExtractedMetadata
+cls
+echo.
+echo Deploying extracted metadata in destination org...
+echo.
+if "%testLevel%"=="RunSpecifiedTests" (
+    echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+    echo.
+    call sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else (
+    echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+    echo.
+    call sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
+)
+if %errorlevel%==1 (
+    echo.
+    echo Unable to deploy metadata
+) else (
+    cls
+    echo.
+    echo Metadata deployed successfully in destination org
+)
+echo.
+pause
+goto startMenu
 
 :: Un-Deploying the metadata in destination org
 :unDeployMetadata
@@ -182,21 +319,15 @@ echo.
 echo Removing metadata from destination org...
 echo.
 echo sfdx force:mdapi:deploy -d "%folderLocationToUndeploy%" -u %destinationOrgAlias% -w %waitTime%
+echo.
 call sfdx force:mdapi:deploy -d "%folderLocationToUndeploy%" -u %destinationOrgAlias% -w %waitTime%
 if %errorlevel%==1 (
+    echo.
     echo Unable to remove metadata
 ) else (
-    echo Metadata removed successfuly from destination org
+    echo.
+    echo Metadata removed successfully from destination org
 )
-goto checkContinue
-
-:: Asking the user to continue with other operations
-:checkContinue
 echo.
-set /P continueProgram="Do you want to perform more operations (y/n) ? :- "
-if "%continueProgram%"=="y" (
-    set continueProgram=
-    goto startMenu
-)
 pause
-exit
+goto startMenu
