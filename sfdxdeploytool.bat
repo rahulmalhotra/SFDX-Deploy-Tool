@@ -5,8 +5,13 @@
 echo.
 echo Welcome to SFDX Deployment Tool for Windows..!!
 
+goto :readConfig
+
 :: Reading configuration
+:readConfig
+echo ----------config----------
 for /f "tokens=1,2 delims==" %%a in (config.txt) do (
+    echo %%a: %%b
     if "%%a"=="sourceOrg" (
         set sourceOrgAlias=%%b
     ) else if "%%a"=="destinationOrg" (
@@ -25,6 +30,7 @@ for /f "tokens=1,2 delims==" %%a in (config.txt) do (
         set folderLocationToUndeploy=%%b
     )
 )
+echo --------------------------
 
 :: Checking for org alias in configuration
 :checkOrgAlias
@@ -126,9 +132,10 @@ goto :checkOrgAlias
 
 :: Displaying Menu
 :startMenu
-cls
 echo.
 echo Welcome to SFDX Deployment Tool for Windows..!!
+echo.
+echo 0. Reload configuration
 echo.
 echo 1. Fetch metadata from source org
 echo.
@@ -145,7 +152,11 @@ echo.
 echo 7. Un-Deploy metadata in destination org
 echo.
 set /P choice="Enter your choice:- "
-if "%choice%"=="1" (
+cls
+if "%choice%"=="0" (
+    set choice=
+    goto :readConfig
+) else if "%choice%"=="1" (
     set choice=
     goto :fetchMetadata
 ) else if "%choice%"=="2" (
