@@ -47,11 +47,25 @@ You can also change it to NoTestRun or anything else from the available test lev
 
 **SFDX Deploy Tool** is now ready for use.
 
-### Usage
+### Usage for Windows
 
 You just need to make sure that the file **sfdxdeploytool.bat** and **config.txt** are in the same folder. 
 After configuring, double click on **sfdxdeploytool.bat** and you're good to go. In case you need a demo, 
-I have written a blog post for the same for the same that can be viewed [here](https://www.sfdcstop.com/2019/06/sfdx-deploy-tool.html).
+I have written a blog post for the same that can be viewed [here](https://www.sfdcstop.com/2019/06/sfdx-deploy-tool.html).
+
+### Usage for macOS
+
+You just need to make sure that the file **sfdxdeploytool.command** and **config.txt** are in the same folder. 
+After configuring, double click on **sfdxdeploytool.command** and you're good to go. In case you need a demo, 
+I have written a blog post for the same that can be viewed [here](https://www.sfdcstop.com/2019/06/sfdx-deploy-tool.html). This blog post mainly specifies the execution using windows operating system. However, the tool will work exactly the same in case of macOS as well.
+
+In case you face any permission issue while executing **sfdxdeploytool.command** file, run the below command in terminal after navigating to SFDX-Deploy-Tool folder:
+
+```
+chmod 755 sfdxdeploytool.command
+```
+
+This will make the file executable in your system so that you can use it easily.
 
 ## Tools and Softwares used
 
@@ -60,7 +74,7 @@ I have written a blog post for the same for the same that can be viewed [here](h
 ## Todo
 
 - [x] User should be able to fetch, validate, deploy and un-deploy metadata.
-- [ ] Support for mac.
+- [x] Support for mac.
 
 ## Contributing
 
