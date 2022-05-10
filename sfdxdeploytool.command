@@ -202,8 +202,8 @@ validateMetadata() {
         echo "sfdx force:mdapi:deploy -c -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests"
         sfdx force:mdapi:deploy -c -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests
     else
-        echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u $destinationOrgAlias -w $waitTime -l %testLevel%
-        sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u $destinationOrgAlias -w $waitTime -l %testLevel%
+        echo sfdx force:mdapi:deploy -c -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l $testLevel
+        sfdx force:mdapi:deploy -c -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l $testLevel
     fi
     if [ "$?" != "0" ]; then
         echo "Unable to validate metadata"
@@ -221,8 +221,8 @@ deployMetadata() {
         echo "sfdx force:mdapi:deploy -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests"
         sfdx force:mdapi:deploy -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests
     else
-        echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u $destinationOrgAlias -w $waitTime -l %testLevel%
-        sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u $destinationOrgAlias -w $waitTime -l %testLevel%
+        echo sfdx force:mdapi:deploy -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l $testLevel
+        sfdx force:mdapi:deploy -f $zipFolderLocation/unpackaged.zip -u $destinationOrgAlias -w $waitTime -l $testLevel
     fi
     if [ "$?" != "0" ]; then
         echo "Unable to deploy metadata"
@@ -240,8 +240,8 @@ validateExtractedMetadata() {
         echo "sfdx force:mdapi:deploy -c -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests"
         sfdx force:mdapi:deploy -c -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests
     else
-        echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u $destinationOrgAlias -w $waitTime -l %testLevel%
-        sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u $destinationOrgAlias -w $waitTime -l %testLevel%
+        echo sfdx force:mdapi:deploy -c -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l $testLevel
+        sfdx force:mdapi:deploy -c -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l $testLevel
     fi
     if [ "$?" != "0" ]; then
         echo "Unable to validate metadata"
@@ -259,8 +259,8 @@ deployExtractedMetadata() {
         echo "sfdx force:mdapi:deploy -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests"
         sfdx force:mdapi:deploy -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l RunSpecifiedTests -r $runTests
     else
-        echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u $destinationOrgAlias -w $waitTime -l %testLevel%
-        sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u $destinationOrgAlias -w $waitTime -l %testLevel%
+        echo sfdx force:mdapi:deploy -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l $testLevel
+        sfdx force:mdapi:deploy -d $zipFolderLocation/unpackaged -u $destinationOrgAlias -w $waitTime -l $testLevel
     fi
     if [ "$?" != "0" ]; then
         echo "Unable to deploy metadata"
