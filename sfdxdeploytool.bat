@@ -224,6 +224,10 @@ if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
     echo.
     call sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else if "%testLevel%"=="Default" (
+    echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime%
+    echo.
+    call sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime%
 ) else (
     echo sfdx force:mdapi:deploy -c -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
     echo.
@@ -251,6 +255,10 @@ if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
     echo.
     call sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else if "%testLevel%"=="Default" (
+    echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime%
+    echo.
+    call sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime%
 ) else (
     echo sfdx force:mdapi:deploy -f "%zipFolderLocation%/unpackaged.zip" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
     echo.
@@ -278,6 +286,10 @@ if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
     echo.
     call sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else if "%testLevel%"=="Default" (
+    echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime%
+    echo.
+    call sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime%
 ) else (
     echo sfdx force:mdapi:deploy -c -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
     echo.
@@ -305,6 +317,10 @@ if "%testLevel%"=="RunSpecifiedTests" (
     echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
     echo.
     call sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l RunSpecifiedTests -r %runTests%
+) else if "%testLevel%"=="Default" (
+    echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime%
+    echo.
+    call sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime%
 ) else (
     echo sfdx force:mdapi:deploy -d "%zipFolderLocation%/unpackaged" -u %destinationOrgAlias% -w %waitTime% -l %testLevel%
     echo.
