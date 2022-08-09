@@ -5,10 +5,9 @@
 echo.
 echo Welcome to SFDX Deployment Tool for Windows..!!
 
-goto :readConfig
-
 :: Reading configuration
 :readConfig
+cls
 echo ----------config----------
 for /f "tokens=1,2 delims==" %%a in (config.txt) do (
     echo %%a: %%b
@@ -196,7 +195,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :extractFetchedMetadata
 cls
@@ -213,7 +212,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :: Validating the metadata in destination org
 :validateMetadata
@@ -240,7 +239,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :: Deploying the metadata in destination org
 :deployMetadata
@@ -267,7 +266,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :: Validating the extracted metadata in destination org
 :validateExtractedMetadata
@@ -294,7 +293,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :: Deploying the extracted metadata in destination org
 :deployExtractedMetadata
@@ -321,7 +320,7 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
 
 :: Un-Deploying the metadata in destination org
 :unDeployMetadata
@@ -341,4 +340,4 @@ if %errorlevel%==1 (
 )
 echo.
 pause
-goto startMenu
+goto readConfig
