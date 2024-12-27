@@ -67,6 +67,8 @@ chmod 755 sfdxdeploytool.command
 
 This will make the file executable in your system so that you can use it easily.
 
+Note: Please use **sfdeploytool.bat** and **sfdeploytool.command** files in case you're using the latest version of SFDX CLI. You also need to ensure that the test classes mentioned in `config.txt` file after `runTests=` in this case are space separated file names and not comma separated.
+
 ## Tools and Softwares used
 
 * [SFDX CLI](https://developer.salesforce.com/tools/sfdxcli) - Salesforce CLI.
